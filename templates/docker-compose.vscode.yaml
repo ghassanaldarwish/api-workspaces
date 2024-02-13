@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  _WORKSPACE:
+    image: "lscr.io/linuxserver/code-server:latest"
+    container_name: _WORKSPACE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    labels:
+      - "traefik.http.routers._WORKSPACE.rule=Host(`vscode._HOST`) && PathPrefix(`/_WORKSPACE`)"
+      - "traefik.http.routers._WORKSPACE.middlewares=_WORKSPACE-stripprefix"
+      - "traefik.http.middlewares._WORKSPACE-stripprefix.stripprefix.prefixes=/_WORKSPACE"
+    restart: unless-stopped
+    volumes:
+      - /Users/ghassanaldarwish/Desktop/webdrei/files/workspaces/_WORKSPACE:/config
+    networks:
+      - app-workspace-network
+
+networks:
+  app-workspace-network:
+    name: app-workspace-network
